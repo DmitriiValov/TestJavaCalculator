@@ -34,12 +34,12 @@ public class CalculatorController {
     @GetMapping
     public Double calc(@RequestParam String expression) throws ParsingException {
         Parser parser = null;
-        double res = 0.0;
+        double result = 0.0;
 
         try {
             parser = new Parser();
             Expression exp = parser.parse(expression);
-            res = exp.evaluate();
+            result = exp.evaluate();
         }
         catch (DivideByZeroException exc) {
             throw new ResponseStatusException(
@@ -62,29 +62,26 @@ public class CalculatorController {
             List<Double> constants = parser.getListOfConsts();
             List<TokenType> operations = parser.getListOfOperations();
 
-            Calculation c = new Calculation();
-            c.setDate(new Date());
-            c.setExpression(expression);
-            c.setResult(res);
-
             List<Operation> os = new ArrayList();
             for (TokenType operation: operations) {
-                Operation o = new Operation();
-                o.setType(operation.ordinal());
+                Operation o = new Operation(operation.ordinal());
                 os.add(o);
             }
-            c.setOperations(os);
 
             List<Constant> cs = new ArrayList();
             for (Double value: constants) {
-                Constant cnt = new Constant();
-                cnt.setValue(value);
+                Constant cnt = new Constant(value);
                 cs.add(cnt);
             }
-            c.setConstants(cs);
 
+            Calculation c = Calculation.createCalculation(
+                    expression,
+                    result,
+                    new Date(),
+                    os,
+                    cs);
             repCalc.save(c);
         }
-        return res;
+        return result;
     }
 }

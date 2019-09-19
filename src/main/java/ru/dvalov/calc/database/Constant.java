@@ -9,6 +9,10 @@ public class Constant {
     private int id;
     private Double value;
 
+    public Constant(Double value) {
+        this.value = value;
+    }
+
     public int getId() {
         return id;
     }

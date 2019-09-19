@@ -20,6 +20,23 @@ public class Calculation {
     @JoinColumn(name = "calculation_id", nullable = false)
     private List<Constant> constants;
 
+    private Calculation() {
+    }
+
+    public static Calculation createCalculation(String expression,
+                                                Double result,
+                                                Date date,
+                                                List<Operation> operations,
+                                                List<Constant> constants) {
+        Calculation c = new Calculation();
+        c.setExpression(expression);
+        c.setResult(result);
+        c.setDate(date);
+        c.setOperations(operations);
+        c.setConstants(constants);
+        return  c;
+    }
+
     public int getId() {
         return id;
     }

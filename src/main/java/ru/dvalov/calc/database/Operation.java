@@ -9,6 +9,10 @@ public class Operation {
     private int id;
     private int type;
 
+    public Operation(int type) {
+        this.type = type;
+    }
+
     public int getId() {
         return id;
     }
