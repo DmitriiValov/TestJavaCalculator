@@ -33,27 +33,6 @@ public class Parser {
         return expression(false);
     }
 
-    public TokenType parseOperation(String operation) throws ParsingException {
-        if(operation.length() == 1) {
-            switch (operation) {
-                case "+":
-                    return TokenType.PLUS;
-                case "-":
-                    return TokenType.MINUS;
-                case "*":
-                    return TokenType.MULT;
-                case "/":
-                    return TokenType.DIV;
-                case "^":
-                    return TokenType.POW;
-                default:
-                    throw new ParsingException("Incorrect operation: " + operation );
-            }
-        } else {
-            throw new ParsingException("Incorrect operation: " + operation );
-        }
-    }
-
     private Expression expression(boolean isLeftBracketPresent) throws ParsingException {
         Expression acc = add();
 

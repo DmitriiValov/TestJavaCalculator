@@ -35,7 +35,7 @@
     /v1/stats/expressions/date/{date}
 
     Получение числа вычислений за дату.
-    /v1/stats/expressions/date/count/{date}
+    /v1/stats/expressions/count/date/{date}
     
     Получение самого популярного числа (или чисел если их несколько).
     /v1/stats/constants/popular

@@ -22,7 +22,7 @@ public class StatisticController {
     @Autowired
     private ConstantRepository repConst;
 
-    @GetMapping("/expressions/date/count/{date}")
+    @GetMapping("/expressions/count/date/{date}")
     public @ResponseBody int getExpressionsCountForDate(@PathVariable String date) {
         Date dateBegin = null;
         Date dateEnd = null;

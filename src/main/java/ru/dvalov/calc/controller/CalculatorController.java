@@ -2,10 +2,7 @@ package ru.dvalov.calc.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import ru.dvalov.calc.calculator.exceptions.ConstantOverflowException;
 import ru.dvalov.calc.calculator.exceptions.DivideByZeroException;
@@ -26,13 +23,9 @@ public class CalculatorController {
 
     @Autowired
     private CalculationRepository repCalc;
-    @Autowired
-    private OperationRepository repOper;
-    @Autowired
-    private ConstantRepository repConst;
 
     @GetMapping
-    public Double calc(@RequestParam String expression) throws ParsingException {
+    public @ResponseBody Double calc(@RequestParam String expression) {
         Parser parser = null;
         double result = 0.0;
 
