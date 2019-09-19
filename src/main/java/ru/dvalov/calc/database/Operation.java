@@ -1,7 +1,5 @@
 package ru.dvalov.calc.database;
 
-import ru.dvalov.calc.calculator.token.TokenType;
-
 import javax.persistence.*;
 
 @Entity
