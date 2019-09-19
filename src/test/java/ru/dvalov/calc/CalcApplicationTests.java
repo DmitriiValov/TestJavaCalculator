@@ -23,12 +23,10 @@ public class CalcApplicationTests {
 	@Test
 	public void testParserPositive1() throws ParsingException {
 		String expression = "(-7*8+9-(9/4.5))^2";
-		Double actualResult = 0.0;
 		Double expectedResult = 2401.0;
-
 		Parser parser = new Parser();
 		Expression exp = parser.parse(expression);
-		actualResult = exp.evaluate();
+		Double actualResult = exp.evaluate();
 
 		assertThat(
 				String.format("Expected result: %s, actual result: %s", expectedResult, actualResult),
@@ -40,11 +38,10 @@ public class CalcApplicationTests {
 	@Test
 	public void testParserPositive2() throws ParsingException {
 		String expression = "9*1+4.5";
-		Double actualResult = 0.0;
 		Double expectedResult = 13.5;
 		Parser parser = new Parser();
 		Expression exp = parser.parse(expression);
-		actualResult = exp.evaluate();
+		Double actualResult = exp.evaluate();
 
 		assertThat(
 				String.format("Expected result: %s, actual result: %s", expectedResult, actualResult),
@@ -58,14 +55,22 @@ public class CalcApplicationTests {
 		String expression = "9*1**4.5";
 
 		Parser parser = new Parser();
-		Expression exp = parser.parse(expression);
+		parser.parse(expression);
+	}
+
+	@Test(expected = InvalidTokenException.class)
+	public void testParserNegative2() throws ParsingException  {
+		String expression = "9#67*6";
+
+		Parser parser = new Parser();
+		parser.parse(expression);
 	}
 
 	@Test(expected = ParsingException.class)
-	public void testParserNegative2() throws ParsingException  {
-		String expression = "967**";
+	public void testParserNegative3() throws ParsingException  {
+		String expression = "1+2+3*";
 
 		Parser parser = new Parser();
-		Expression exp = parser.parse(expression);
+		parser.parse(expression);
 	}
 }
