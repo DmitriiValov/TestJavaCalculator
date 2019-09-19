@@ -1,7 +1,5 @@
 package ru.dvalov.calc.calculator.parser;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
 import ru.dvalov.calc.calculator.exceptions.ParsingException;
 import ru.dvalov.calc.calculator.operators.Const;
 import ru.dvalov.calc.calculator.operators.Expression;
