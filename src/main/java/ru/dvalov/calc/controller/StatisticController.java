@@ -1,9 +1,12 @@
 package ru.dvalov.calc.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import ru.dvalov.calc.database.CalculationRepository;
 import ru.dvalov.calc.database.ConstantRepository;
+import ru.dvalov.calc.utils.Utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,30 +24,30 @@ public class StatisticController {
 
     @GetMapping("/expressions/date/count/{date}")
     public @ResponseBody int getExpressionsCountForDate(@PathVariable String date) {
-        Date dateBegin = new Date();
-        Date dateEnd = new Date();
-        String strBegin = date + " 00:00";
-        String strEnd = date + " 23:59";
+        Date dateBegin = null;
+        Date dateEnd = null;
         try {
-            dateBegin = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(strBegin);
-            dateEnd = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(strEnd);
+            dateBegin = Utils.parseDate(date + " 00:00");
+            dateEnd = Utils.parseDate(date + " 23:59");
         }
         catch (ParseException exc) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Parsing error in date", exc);
         }
         return repCalc.getExpressionsCountWithDate(dateBegin, dateEnd);
     }
 
     @GetMapping("/expressions/date/{date}")
     public @ResponseBody List<String> getExpressionsForDate(@PathVariable String date) {
-        Date dateBegin = new Date();
-        Date dateEnd = new Date();
-        String strBegin = date + " 00:00";
-        String strEnd = date + " 23:59";
+        Date dateBegin = null;
+        Date dateEnd = null;
         try {
-            dateBegin = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(strBegin);
-            dateEnd = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(strEnd);
+            dateBegin = Utils.parseDate(date + " 00:00");
+            dateEnd = Utils.parseDate(date + " 23:59");
         }
         catch (ParseException exc) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Parsing error in date", exc);
         }
         return repCalc.findExpressionsWithDate(dateBegin, dateEnd);
     }

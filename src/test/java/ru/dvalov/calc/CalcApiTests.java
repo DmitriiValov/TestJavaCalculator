@@ -65,7 +65,7 @@ public class CalcApiTests {
 
         Calculation c = Calculation.createCalculation(
                 "5*5+6-6",
-                5.0,
+                25.0,
                 new Date(),
                 os,
                 cs);
@@ -83,5 +83,4 @@ public class CalcApiTests {
         System.out.println(mvcResult.getResponse());
         verify(constantRepository).findPopular();
     }
-
 }
