@@ -1,10 +1,8 @@
 package ru.dvalov.calc.database;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Calculation {
@@ -14,6 +12,13 @@ public class Calculation {
     private String expression;
     private Double result;
     private Date date;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "calculation_id", nullable = false)
+    private List<Operation> operations;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "calculation_id", nullable = false)
+    private List<Constant> constants;
 
     public int getId() {
         return id;
@@ -45,5 +50,21 @@ public class Calculation {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public List<Operation> getOperations() {
+        return operations;
+    }
+
+    public void setOperations(List<Operation> operations) {
+        this.operations = operations;
+    }
+
+    public List<Constant> getConstants() {
+        return constants;
+    }
+
+    public void setConstants(List<Constant> constants) {
+        this.constants = constants;
     }
 }

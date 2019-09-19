@@ -9,9 +9,7 @@ public class Operation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private TokenType type;
-    @OneToOne
-    private Calculation calculation;
+    private int type;
 
     public int getId() {
         return id;
@@ -21,19 +19,11 @@ public class Operation {
         this.id = id;
     }
 
-    public TokenType getType() {
+    public int getType() {
         return type;
     }
 
-    public void setType(TokenType type) {
+    public void setType(int type) {
         this.type = type;
-    }
-
-    public Calculation getCalculation() {
-        return calculation;
-    }
-
-    public void setCalculation(Calculation calculation) {
-        this.calculation = calculation;
     }
 }

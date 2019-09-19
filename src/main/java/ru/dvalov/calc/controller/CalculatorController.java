@@ -1,6 +1,5 @@
 package ru.dvalov.calc.controller;
 
-import com.sun.codemodel.internal.JTryBlock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,18 +7,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+import ru.dvalov.calc.calculator.exceptions.ConstantOverflowException;
 import ru.dvalov.calc.calculator.exceptions.DivideByZeroException;
+import ru.dvalov.calc.calculator.exceptions.InvalidTokenException;
 import ru.dvalov.calc.calculator.exceptions.ParsingException;
 import ru.dvalov.calc.calculator.operators.Expression;
 import ru.dvalov.calc.calculator.parser.Parser;
 import ru.dvalov.calc.calculator.token.TokenType;
 import ru.dvalov.calc.database.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("calc")
+@RequestMapping("v1/calc")
 public class CalculatorController {
 
     @Autowired
@@ -39,38 +41,50 @@ public class CalculatorController {
             Expression exp = parser.parse(expression);
             res = exp.evaluate();
         }
-        catch (ParsingException exc) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "Parsing error", exc);
-        }
         catch (DivideByZeroException exc) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, "Divizion by zero", exc);
         }
-
-        List<Double> constants = parser.getListOfConsts();
-        List<TokenType> operations = parser.getListOfOperations();
-
-        Calculation c = new Calculation();
-        c.setDate(new Date());
-        c.setExpression(expression);
-        c.setResult(res);
-        repCalc.save(c);
-
-        for (TokenType operation: operations) {
-            Operation o = new Operation();
-            o.setType(operation);
-            o.setCalculation(c);
-            repOper.save(o);
+        catch (ConstantOverflowException exc) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Constant overflow", exc);
+        }
+        catch (InvalidTokenException exc) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Invalid token", exc);
+        }
+        catch (ParsingException exc) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Parsing error", exc);
         }
 
-        for (Double value: constants) {
-            Constant cnt = new Constant();
-            cnt.setValue(value);
-            cnt.setCalculation(c);
-            repConst.save(cnt);
-        }
+        if (parser != null) {
+            List<Double> constants = parser.getListOfConsts();
+            List<TokenType> operations = parser.getListOfOperations();
 
+            Calculation c = new Calculation();
+            c.setDate(new Date());
+            c.setExpression(expression);
+            c.setResult(res);
+
+            List<Operation> os = new ArrayList();
+            for (TokenType operation: operations) {
+                Operation o = new Operation();
+                o.setType(operation.ordinal());
+                os.add(o);
+            }
+            c.setOperations(os);
+
+            List<Constant> cs = new ArrayList();
+            for (Double value: constants) {
+                Constant cnt = new Constant();
+                cnt.setValue(value);
+                cs.add(cnt);
+            }
+            c.setConstants(cs);
+
+            repCalc.save(c);
+        }
         return res;
     }
 }

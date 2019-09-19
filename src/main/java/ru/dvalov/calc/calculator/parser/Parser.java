@@ -1,5 +1,7 @@
 package ru.dvalov.calc.calculator.parser;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 import ru.dvalov.calc.calculator.exceptions.ParsingException;
 import ru.dvalov.calc.calculator.operators.Const;
 import ru.dvalov.calc.calculator.operators.Expression;
@@ -31,6 +33,27 @@ public class Parser {
         listOfOperations.clear();
         tokens = new TokensReader(expression);
         return expression(false);
+    }
+
+    public TokenType parseOperation(String operation) throws ParsingException {
+        if(operation.length() == 1) {
+            switch (operation) {
+                case "+":
+                    return TokenType.PLUS;
+                case "-":
+                    return TokenType.MINUS;
+                case "*":
+                    return TokenType.MULT;
+                case "/":
+                    return TokenType.DIV;
+                case "^":
+                    return TokenType.POW;
+                default:
+                    throw new ParsingException("Incorrect operation: " + operation );
+            }
+        } else {
+            throw new ParsingException("Incorrect operation: " + operation );
+        }
     }
 
     private Expression expression(boolean isLeftBracketPresent) throws ParsingException {
