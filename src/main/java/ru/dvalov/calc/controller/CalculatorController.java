@@ -24,11 +24,10 @@ public class CalculatorController {
     @Autowired
     private CalculationRepository repCalc;
 
-    @GetMapping
+    @PostMapping
     public @ResponseBody Double calc(@RequestParam String expression) {
         Parser parser = null;
         double result = 0.0;
-
         try {
             parser = new Parser();
             Expression exp = parser.parse(expression);

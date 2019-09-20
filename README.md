@@ -17,7 +17,9 @@
     Примеры API вызовов:    
 
     Вычисление математического выражения:
-    /v1/calc?expression={expression}
+    (POST) /v1/calc
+    И передаем параметр expression через Body
+    expression -> (-7*8+9-(9/4.5))^2
     
     Получение всех вычислений содержащих операцию.
     Где: "+" id = 0
@@ -25,18 +27,18 @@
          "*" id = 2
          "/" id = 3
          "^" id = 4
-    /v1/stats/expressions/operation/{operationId}    
+    (GET) /v1/stats/expressions/operation/{operationId}    
     
     Получение числа вычислений содержащих операцию.
-    /v1/stats/expressions/count/operation/{operationId}
+    (GET) /v1/stats/expressions/count/operation/{operationId}
     
     Получение всех вычислений за дату.
     "Формат даты 2019-09-19"
-    /v1/stats/expressions/date/{date}
+    (GET) /v1/stats/expressions/date/{date}
 
     Получение числа вычислений за дату.
-    /v1/stats/expressions/count/date/{date}
+    (GET) /v1/stats/expressions/count/date/{date}
     
     Получение самого популярного числа (или чисел если их несколько).
-    /v1/stats/constants/popular
+    (GET) /v1/stats/constants/popular
     

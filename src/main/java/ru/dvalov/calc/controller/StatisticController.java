@@ -9,7 +9,6 @@ import ru.dvalov.calc.database.ConstantRepository;
 import ru.dvalov.calc.utils.Utils;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 

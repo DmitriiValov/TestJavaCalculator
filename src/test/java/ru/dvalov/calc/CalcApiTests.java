@@ -79,8 +79,6 @@ public class CalcApiTests {
                 MockMvcRequestBuilders.get("/v1/stats/constants/popular")
                         .accept(MediaType.APPLICATION_JSON)
         ).andReturn();
-
-        System.out.println(mvcResult.getResponse());
         verify(constantRepository).findPopular();
     }
 }
